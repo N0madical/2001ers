@@ -7,31 +7,44 @@ const int points = 5;
 
 int point = 0;
 
+int incomingByte = 0;
+int setPos1 = 0;
+int setPos2 = 0;
+
 /**
  * Handles moving robot along a set path
  */
 void Robot::ControllerLoop(void) {
-    #ifdef __CONTROLLER_DEBUG__
-        TeleplotPrint("State", robotState);
-        TeleplotPrint("Point",point);
-    #endif
-    if(robotState == ROBOT_IDLE) {
-        if(point <= points - 1) {
-            Pose destPose;  
+    if (Serial.available() > 0) {
+        incomingByte = Serial.read();
+        setPos1 = (int(incomingByte)-48)*10;
+        Serial.print("I received: ");
+        Serial.println(setPos1, DEC);
+    };
 
-            destPose.x = route[point][1];
-            destPose.y = route[point][0];
-            destPose.theta = route[point][2] * DEG_TO_RAD;
+    // SetServoAngle1(setPos1);
+    SetServoAngle2(setPos1);
+    // #ifdef __CONTROLLER_DEBUG__
+    //     TeleplotPrint("State", robotState);
+    //     TeleplotPrint("Point",point);
+    // #endif
+    // if(robotState == ROBOT_IDLE) {
+    //     if(point <= points - 1) {
+    //         Pose destPose;  
 
-            SetDestination(destPose);
-            point++;
-        } else {
-            robotState = ROBOT_DONE;
-            Serial.println("-> Loop Done");
-        }
-    } else if (robotState != ROBOT_DONE) {
-        RobotLoop();
-    }
+    //         destPose.x = route[point][1];
+    //         destPose.y = route[point][0];
+    //         destPose.theta = route[point][2] * DEG_TO_RAD;
+
+    //         SetDestination(destPose);
+    //         point++;
+    //     } else {
+    //         robotState = ROBOT_DONE;
+    //         Serial.println("-> Loop Done");
+    //     }
+    // } else if (robotState != ROBOT_DONE) {
+    //     RobotLoop();
+    // }
 }
 
 /**

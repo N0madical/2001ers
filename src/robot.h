@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chassis.h"
+#include "Servo.h"
 
 class Robot
 {
@@ -30,6 +31,15 @@ class Robot
         Pose currPose;
         Pose destPose;
         float omegaI;
+
+        int servoMainRot = 0;
+        int servoSecondRot = 0;
+
+        const int servoMainOffset = 8;
+        const int servoSecondOffset = 0;
+
+        Servo servo1;
+        Servo servo2;
         
     public:
         Robot(void) {keyString.reserve(10);}
@@ -48,8 +58,16 @@ class Robot
         void DriveToPoint(void);
         void SetHeading(void);
         bool CheckReachedDestination(void);
+
         Twist GetDestDistance(void);
         void HandleDestination(void);
+
+        Pose armPosToServo(int[2]);
+        Pose getArmPos(void);
+
+         /* Servo/Arm methods */
+        void SetServoAngle1(const int angle);
+        void SetServoAngle2(const int angle);
 
         void RobotLoop(void);
 };

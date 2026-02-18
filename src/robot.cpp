@@ -5,6 +5,9 @@ int setVelocity = 0;
 void Robot::InitializeRobot(void)
 {
     chassis.InititalizeChassis();
+
+    servo1.attach(13);
+    servo2.attach(5);
 }
 
 void Robot::EnterIdleState(void)
