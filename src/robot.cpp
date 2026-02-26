@@ -6,8 +6,8 @@ void Robot::InitializeRobot(void)
 {
     chassis.InititalizeChassis();
 
-    servo1.attach(13);
-    servo2.attach(5);
+    servo1.attach(20);
+    servo2.attach(21);
 }
 
 void Robot::EnterIdleState(void)

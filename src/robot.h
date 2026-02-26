@@ -15,6 +15,7 @@ class Robot
             ROBOT_IDLE,
             ROBOT_DRIVE_TO_POINT,
             ROBOT_SET_HEADING,
+            ARM_ACTIVE,
             ROBOT_DONE,
         };
         ROBOT_STATE robotState = ROBOT_IDLE;
@@ -35,7 +36,7 @@ class Robot
         int servoMainRot = 0;
         int servoSecondRot = 0;
 
-        const int servoMainOffset = 8;
+        const int servoMainOffset = 0;
         const int servoSecondOffset = 0;
 
         Servo servo1;
@@ -62,12 +63,15 @@ class Robot
         Twist GetDestDistance(void);
         void HandleDestination(void);
 
-        Pose armPosToServo(int[2]);
         Pose getArmPos(void);
 
          /* Servo/Arm methods */
-        void SetServoAngle1(const int angle);
-        void SetServoAngle2(const int angle);
+        void SetServoAngle1(const float angle);
+        void SetServoAngle2(const float angle);
+        void armLoop(void);
+        void setArmPos(int,int);
+
+        void SerialInputLoop();
 
         void RobotLoop(void);
 };
