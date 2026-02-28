@@ -1,10 +1,29 @@
 #include "robot.h"
 
-// const float route[4][3] = {{0.818,0,-PI/2},{0.818,-0.396,-PI},{0,-0.396,(3*-PI)/2},{0,0,0}};
-// const float route[4][3] = {{2.05,0.409,-PI/2},{2.05,-0.417,-PI},{0,0,0}};
-// const float route[5][3] = {{0.398,1.228,-45},{-0.417,2.05,170},{0.389,0.408,-20},{0,2.05,-180},{0,0,0}};
-const float route[6][3] = {{180,175,512},{200,-10,512},{280,-10,512},{280,50,512},{200,75,512},{175,175,512}};
-const int points = 6;
+// const float route[5][4] = {{0.398,1.228,-45,0},{-0.417,2.05,170,0},{0.389,0.408,-20,0},{0,2.05,-180,0},{0,0,0,0}};
+// const float route[8][4] = {{180,175,512,1},{200,-10,512,1},{280,-10,512,1},{280,50,512,1},{200,75,512,1},{175,175,512,1},{0.3,0.2,-45,0},{0,0.4,180,0}};
+const float route[20][4] = {
+    {200,30,0,1},
+    {200,-2,0,1},
+    {270,-2,0,1},
+    {270,50,0,1},
+    {175,50,0,1},
+    {175,200,0,1},
+    {225,192,0,1},
+    {225,175,0,1},
+    {150,175,0,1},
+    {125,212,0,1},
+    {210,212,0,1},
+    {210,245,0,1},
+    {150,245,0,1},
+    {150,290,0,1},
+    {210,270,0,1},
+    {210,260,0,1},
+    {100,265,0,1},
+    {125,125,0,1},
+    {0.15,0.2,-45,0},
+    {-0.02,0.42,180,0}};
+const int points = 20;
 
 int point = 0;
 
@@ -24,10 +43,11 @@ void Robot::ControllerLoop(void) {
     #endif
     #ifdef __SERIAL_CONTROL__
         SerialInputLoop();
+        armLoop();
     #else
         if(robotState == ROBOT_IDLE) {
             if(point <= points - 1) {
-                if(route[point][2] > 360) {
+                if(route[point][3] == 1) {
                     Serial.println("Moving arm");
                     setArmPos(route[point][0], route[point][1]);
                     robotState = ARM_ACTIVE;
@@ -48,13 +68,14 @@ void Robot::ControllerLoop(void) {
             }
         } else if (robotState != ROBOT_DONE) {
             RobotLoop();
+            armLoop();
         }
     #endif
-    armLoop();
 }
 
 void Robot::SerialInputLoop() {
     if (Serial.available() > 0) {
+        robotState = ARM_ACTIVE;
         incomingByte = int(Serial.read())-48;
         switch (inputPos) {
             case 0:

@@ -2,8 +2,8 @@
 
 float mainAngle = 0;
 float secondaryAngle = 0;
-float goToPos1 = PI/2;
-float goToPos2 = PI/2;
+float goToPos1 = PI/2 + (PI/10);
+float goToPos2 = PI/2 + (PI/10);
 
 void Robot::setArmPos(int x, int y) {
     //Set up where 90 degrees on both servos forms an L

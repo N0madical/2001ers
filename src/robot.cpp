@@ -33,8 +33,6 @@ void Robot::RobotLoop(void)
         // We do FK regardless of state
         UpdatePose(velocity);
 
-        ControllerLoop();
-
         if(robotState == ROBOT_DRIVE_TO_POINT)
         {
             DriveToPoint();
